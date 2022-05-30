@@ -1,0 +1,1 @@
+web: gunicorn roopa_blog.wsgi
