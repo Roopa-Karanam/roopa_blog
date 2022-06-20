@@ -79,19 +79,19 @@ class Comments(models.Model):
     name = models.CharField(max_length=255)
     text = models.TextField()
     approved=models.BooleanField()
-    email=models.EmailField (unique=True)
+    email=models.EmailField ()
     created = models.DateTimeField(auto_now_add=True)  # Sets on create
     updated = models.DateTimeField(auto_now=True)  # Updates on each save
     
     post = models.ForeignKey(
-       settings.AUTH_USER_MODEL,  # The Django auth user model
+       Post,  # The Django auth user model
        on_delete=models.PROTECT,  # Prevent posts from being deleted
        related_name='comments',  # "This" on the user model
-       null=True
+       null=False
    )
    
     def __str__(self):
-        return self.title
+        return self.name
     class Meta:
         # Sort by the `created` field. The `-` prefix
         # specifies to order in descending/reverse order.

@@ -2,6 +2,11 @@
 
 from django.contrib import admin
 from . import models
+from blogroopa.models import Comments
+class CommentInline(admin.TabularInline):
+    model = Comments
+    fields = ('name', 'email', 'text', 'approved')
+    readonly_fields = ('name', 'email', 'text')
 
 # Register the `Post` model
 class PostAdmin(admin.ModelAdmin):
@@ -22,6 +27,9 @@ class PostAdmin(admin.ModelAdmin):
         'status',
         'topics',
     )
+    inlines = [
+        CommentInline,
+    ]
     prepopulated_fields = {'slug': ('title',)}
     
 @admin.register(models.Topic)
@@ -38,7 +46,19 @@ class CommentsAdmin(admin.ModelAdmin):
         'name',
         'email',
     )
+    search_fields = (
+        'text',
+        'name',
+        )
+    list_filter = (
+        'name',
+        'approved',
+    )
+    
     
 
+
+
+    
 admin.site.register(models.Post, PostAdmin)
 
