@@ -17,7 +17,7 @@ class HomeView( TemplateView):
 
         return context
 class AboutView(TemplateView):
-    template_name = 'blog/about.html'
+    template_name = 'blogroopa/about.html'
     
 def terms_and_conditions(request):
    return render(request, 'blog/terms_and_conditions.html')    
