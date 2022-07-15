@@ -20,6 +20,9 @@ from blogroopa import views
 
 urlpatterns = [
     #path('', views.index),  # Add our index view to the URL patterns
-    path('admin/', admin.site.urls),
-    path('', views.home, name='home'),  # Set root to home view
+    path('admin/', admin.site.urls),    
+
+    path('', views.HomeView.as_view(), name='home'),  # Set root to home view
+    path('about/', views.AboutView.as_view(), name='about'),
+
 ]
