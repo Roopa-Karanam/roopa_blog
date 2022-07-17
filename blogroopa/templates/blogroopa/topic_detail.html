@@ -1,0 +1,13 @@
+
+
+{% extends "blogroopa/base.html" %}
+
+{% block page_title %}{{ post.title }}{% endblock %}
+
+{% block main %}
+{% for post in topic.blog_posts.all %}
+    {% include "blogroopa/post_preview.html" %}
+{% endfor %}
+
+
+{% endblock %}

@@ -1,5 +1,5 @@
 # blog/models.py
-
+from django.urls import reverse
 from django.db import models
 from django.conf import settings  # Imports Django's loaded settings
 
@@ -16,6 +16,10 @@ class Topic(models.Model):
 
     class Meta:
         ordering = ['name']
+    
+    def get_absolute_url(self):
+        kwargs = {'slug': self.slug}
+        return reverse('topic-detail', kwargs=kwargs)
 
 class Post(models.Model):
     """
@@ -62,6 +66,8 @@ class Post(models.Model):
         related_name='blogroopa_posts'
     )
     
+    
+    
     def __str__(self):
         return self.title
     class Meta:
@@ -69,6 +75,21 @@ class Post(models.Model):
         # specifies to order in descending/reverse order.
         # Otherwise, it will be in ascending order.
         ordering = ['-created']
+        
+    def get_absolute_url(self):
+        if self.published:
+            kwargs = {
+                'year': self.published.year,
+                'month': self.published.month,
+                'day': self.published.day,
+                'slug': self.slug
+            }
+        else:
+            kwargs = {'pk': self.pk}
+
+        return reverse('post-detail', kwargs=kwargs)
+    
+    
         
         
 class Comments(models.Model):
@@ -97,4 +118,5 @@ class Comments(models.Model):
         # specifies to order in descending/reverse order.
         # Otherwise, it will be in ascending order.
         ordering = ['-created']
+        
         
