@@ -1,10 +1,11 @@
-from django.views import View
+
 from django.shortcuts import render
 from . import models
-from django.db.models import Count
+#from django.db.models import Count
 from django.views.generic.base import TemplateView
-from django.views.generic import ListView
-from django.views.generic import DetailView
+from django.urls import reverse_lazy
+from django.contrib import messages
+from django.views.generic import DetailView, CreateView, FormView, ListView
 
 # Create your views here.
     
@@ -33,6 +34,22 @@ class TopicListView(ListView):
     model = models.Topic
     context_object_name = 'topics'
     queryset = models.Topic.objects.all()  # Customized queryset   
+class ContestFormView(CreateView):
+    model=models.Contest
+    success_url = reverse_lazy('home')
+    fields = [
+        'name',
+        'email',
+        'photo',
+    ]
+    def form_valid(self, form):
+        messages.add_message(
+            self.request,
+            messages.SUCCESS,
+            'Thank you for the submission.'
+        )
+        return super().form_valid(form)
+
 
     
 class PostDetailView(DetailView):
@@ -56,3 +73,21 @@ class TopicDetailView(DetailView):
     model = models.Topic
     def get_queryset(self):
         return super().get_queryset().all()
+class ContactFormView(CreateView):
+    model = models.Contact
+    success_url = reverse_lazy('home')
+    fields = [
+        'first_name',
+        'last_name',
+        'email',
+        'message',
+    ]
+
+    def form_valid(self, form):
+        messages.add_message(
+            self.request,
+            messages.SUCCESS,
+            'Thank you! Your message has been sent.'
+        )
+        return super().form_valid(form)
+    
