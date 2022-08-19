@@ -2,9 +2,9 @@
 
 from django.contrib import admin
 from . import models
-from blogroopa.models import Comments
+from blogroopa.models import Comment
 class CommentInline(admin.TabularInline):
-    model = Comments
+    model = Comment
     fields = ('name', 'email', 'text', 'approved')
     readonly_fields = ('name', 'email', 'text')
 
@@ -40,7 +40,7 @@ class TopicAdmin(admin.ModelAdmin):
     )
     prepopulated_fields = {'slug': ('name',)}
     
-@admin.register(models.Comments)
+@admin.register(models.Comment)
 class CommentsAdmin(admin.ModelAdmin):
     list_display = (
         'name',

@@ -1,6 +1,6 @@
 
 from django.shortcuts import render
-from . import models
+from . import models,forms
 #from django.db.models import Count
 from django.views.generic.base import TemplateView
 from django.urls import reverse_lazy
@@ -9,6 +9,7 @@ from django.views.generic import DetailView, CreateView, FormView, ListView
 
 # Create your views here.
     
+
 class HomeView( TemplateView):
     template_name = 'blogroopa/home.html'
 
@@ -68,6 +69,19 @@ class PostDetailView(DetailView):
             published__month=self.kwargs['month'],
             published__day=self.kwargs['day'],
         )
+    def get_context_data(self, **kwargs):
+     context = super().get_context_data(**kwargs)
+     # Get the post object
+     post = self.get_object()
+
+     # Set the post field on the form
+     comment_form = forms.CommentForm(initial={'post': post})
+     comments = models.Comment.objects.filter(post=post)
+
+     context['comment_form'] = comment_form
+     context['comments'] = comments.order_by('-created')
+
+     return context
 
 class TopicDetailView(DetailView):
     model = models.Topic

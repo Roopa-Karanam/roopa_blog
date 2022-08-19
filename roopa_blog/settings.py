@@ -44,6 +44,8 @@ INSTALLED_APPS = [
     'credit',
     'ckeditor',
     'ckeditor_uploader',
+    'rest_framework',
+    'api'
     
 ]
 CKEDITOR_UPLOAD_PATH = 'uploads/'

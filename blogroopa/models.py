@@ -66,6 +66,13 @@ class Post(models.Model):
         related_name='blogroopa_posts'
     )
     
+    banner = models.ImageField(
+        blank=True,
+        null=True,
+        help_text='A banner image for the post'
+    )
+
+    
     
     
     def __str__(self):
@@ -111,37 +118,32 @@ class Contest(models.Model):
     )
     submitted = models.DateTimeField(auto_now_add=True)
     
+class CommentQuerySet(models.QuerySet):
+    def get_queryset(self):
+        return self
 
     
-    
-    
-        
-        
-class Comments(models.Model):
-    """
-    Represents a blogroopa post
-    """
-
-    name = models.CharField(max_length=255)
-    text = models.TextField()
-    approved=models.BooleanField()
-    email=models.EmailField ()
-    created = models.DateTimeField(auto_now_add=True)  # Sets on create
-    updated = models.DateTimeField(auto_now=True)  # Updates on each save
-    
+class Comment(models.Model):
     post = models.ForeignKey(
-       Post,  # The Django auth user model
-       on_delete=models.PROTECT,  # Prevent posts from being deleted
-       related_name='comments',  # "This" on the user model
-       null=False
-   )
-   
+        Post,
+        on_delete=models.CASCADE,
+        related_name='comments'
+    )
+    name = models.CharField(max_length=100)
+    email = models.EmailField()
+    text = models.TextField()
+    approved = models.BooleanField(default=True)
+    created = models.DateTimeField(auto_now_add=True)
+    updated = models.DateTimeField(auto_now=True)
+
+    objects = CommentQuerySet.as_manager()
+    likes = models.IntegerField(default=0)
+    dislikes = models.IntegerField(default=0)
+
+
     def __str__(self):
-        return self.name
+        return f'{self.name} re: {self.post}'
+
     class Meta:
-        # Sort by the `created` field. The `-` prefix
-        # specifies to order in descending/reverse order.
-        # Otherwise, it will be in ascending order.
         ordering = ['-created']
-        
-        
+    

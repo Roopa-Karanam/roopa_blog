@@ -62,5 +62,13 @@
     <!-- Print copyright with the current year -->
     Copyright &copy;{% now 'Y' %}
   </footer>
+  {# blog/templates/blog/base.html #}
+
+  {# ... #}
+  {% block js %}
+    <script src="{% static "blogroopa/csrf.js" %}"></script>
+    <script src="{% static "blogroopa/comments.js" %}"></script>
+  {% endblock %}
+</body>
 </body>
 </html>

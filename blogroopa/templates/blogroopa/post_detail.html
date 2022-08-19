@@ -1,6 +1,7 @@
 
 
 {% extends "blogroopa/base.html" %}
+{% load static %}
 
 {% block page_title %}{{ post.title }}{% endblock %}
 
@@ -12,4 +13,31 @@
 
   <section class="content">{{ post.content|linebreaks }}</section>
 </article>
+
+<section class="comments">
+  {% if comments %}
+    <h3>Latest comments</h3>
+    {% for comment in comments %}
+      <div class="comment">
+        <span class="by-line">By {{ comment.name }} | <time>{{ comment.created }}</time></span>
+        {{ comment.text|linebreaks }}
+       <a  id="likes{{comment.id}}" class="likes" href="/api/comments/{{comment.pk}}/likes/" >
+       <img class="thumbs" src="{% static "blogroopa/thumbsup.png" %}">
+        <span id="numlikes{{comment.id}}">{{comment.likes}}</span></a>
+      <a id="dislikes{{comment.id}}" class="dislikes" href="/api/comments/{{comment.pk}}/dislikes/">
+       <img class="thumbs" src="{% static "blogroopa/thumbsdown.png" %}">
+       <span id="numdislikes{{comment.id}}">{{comment.dislikes}}</span></a>
+       
+
+        
+      </div>
+    {% endfor %}
+  {% endif %}
+
+  <h3>Leave a comment</h3>
+  {# Alias the variable for the included template #}
+  {% with form=comment_form %}
+    {% include "blogroopa/comment_form.html" %}
+  {% endwith %}
+</section>
 {% endblock %}
